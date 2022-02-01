@@ -1,0 +1,49 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    background-color: #555;
+    margin: 0;
+}
+
+a{
+    color: black;
+}
+
+.usuarios{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+}
+
+section > h2{
+    text-align: center;
+    font-size: 1rem;
+}
+
+
+section{
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 10px;
+  
+        
+}
+.usuario{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: .5rem;
+    margin-bottom: 10px;
+    border: 1px solid #fefefe;
+    border-radius: 15px;
+    font-size: .6rem;
+    font-family: sans-serif;
+    cursor: pointer;
+}

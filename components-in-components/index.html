@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Components</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div id="app">
+        <article class="usuarios">
+            <!-- usuarios disponibles -->
+
+            <section class="disponibles">
+
+                <h2>Usuarios disponibles: {{ usuariosDisponibles.length }} </h2>
+                <usuarios :listado="usuariosDisponibles" mover-a="usuariosSeleccionados"></usuarios>
+
+            </section>
+
+            <!-- usuarios seleccionados -->
+            
+            <section class="seleccionados">
+
+                <h2>Usuarios seleccionados: {{ usuariosSeleccionados.length }} </h2>
+                <usuarios :listado="usuariosSeleccionados" mover-a="usuariosDisponibles"></usuarios>
+
+            </section>
+
+            </article>
+            <pre>
+                {{ $data }}
+            </pre>
+        </div>
+
+        <script type="text/x-template" id="template-usuario">
+                <article class="usuario" @click="buscarUsuario">
+                    <img :src="info.picture" alt="Foto de usuario">
+                    <span> {{ nombreCompleto }} </span>
+                    <a :href="info.email"> {{ info.email }} </a>
+                    <span> {{ info.username }} </span>
+                </article>
+        </script>
+
+        <script type="text/x-template" id="template-usuarios">
+                <article>
+                    <usuario v-for="usuario in listado" :info="usuario" @buscar="moverUsuario"></usuario>
+                </article>
+        
+        </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>     
+        <script src="index.js"></script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax con Axios</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div id="app">
+        <form @submit.prevent="guardarTarea">
+            <input v-model="nuevaTarea" type="text" placeholder="Tarea" required>
+            <input type="submit" value="Enviar">
+        </form>
+        <ul>
+            <li v-for="tarea in tareas">{{ tarea.title }}</li>
+        </ul>
+        <pre>{{ $data }}</pre>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        new Vue({
+            el: "#app",
+            created() {
+                axios.get(this.url)
+                    .then(respuesta =>this.tareas = respuesta.data)
+            },
+            data: {
+                nuevaTarea: null,
+                url: 'https://jsonplaceholder.typicode.com/todos',
+                tareas: []      
+            },
+            methods: {
+                guardarTarea() {
+                    axios.post(this.url,
+                        {
+                            title: this.nuevaTarea,
+                            userId: Math.floor(Math.random() * 10) + 1
+                        }
+                    )
+                        .then(respuesta => {
+                            console.log(respuesta)
+                            this.tareas.unshift({
+                                title: this.nuevaTarea,
+                                userId: Math.floor(Math.random() * 10) + 1
+                            });
+                            this.nuevaTarea = '';
+                        })
+                        .catch(error => console.log(error))
+                }
+            }
+            
+        })
+        Vue.config.devtools = true;
+    </script>
+</body>
+</html>

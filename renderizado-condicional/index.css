@@ -1,0 +1,38 @@
+body {
+    background-color: #5a5a86;
+    min-height: 100vh;
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+main {
+    max-width: 800px;
+    border: 1px solid gray;
+    padding: 20px;
+}
+
+form > * {
+    display: block;
+    width: 100%;
+}
+
+input[type="text"], textarea {
+    border: none;
+    background-color: lightgray;
+    padding: 5px;
+}
+
+label, div, input[type="submit"] {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+div > * {
+    vertical-align: middle;
+}
+
+label:first-of-type {
+    margin-top: 0;
+}

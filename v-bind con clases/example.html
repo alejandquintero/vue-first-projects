@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue</title>
+    <style>
+        body{
+            background-color: #334;
+        }
+
+        .user__log{
+            width: 250px;
+            height: 10vh;
+            border: 1px solid #fff;
+            text-align: center;
+            line-height: 10vh;
+            border-radius: 15px;
+            margin: auto;
+        }
+
+        .logged__in{
+            background-color: limegreen;
+        }
+
+        .logged__out{
+            background-color: tomato;
+        }
+    </style>
+</head>
+<body>
+    <main id="app">
+        <span>Login/out</span>
+        <input type="checkbox" v-model="logged">
+        <div class="user__log" :class= "logClass" >
+            {{ mensajeLog }}
+        </div>
+        <pre> {{ $data }} </pre>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                logged: false,
+                mensaje : {
+                    in: "Te has loggeado como Alejandro",
+                    out: "Estas desconectado"
+                }
+            },
+            computed:{
+                mensajeLog(){
+                    return this.logged ? this.mensaje.in : this.mensaje.out
+                },
+                logClass(){
+                    return this.logged ? 'logged__in' : 'logged__out'
+                }
+            }
+        });
+        Vue.config.devtools = true;
+    </script>
+</body>
+</html>

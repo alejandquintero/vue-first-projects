@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watcher</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div id="app">
+        <div>
+            <h2>Cambiar contraseña</h2>
+            <input type="text" v-model="password">
+            <br>
+            <label v-model="estado"> {{ estado }} </label>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script>
+        const vm = new Vue({
+            el: "#app",
+            data:{
+                password : null,
+                estado: 'Introduce tu nueva contraseña',
+                noValidos: ['admin', '12345', 'password']          
+            },
+            watch:{
+                password(nuevo, antiguo){
+
+                    if(this.noValidos.indexOf(nuevo) > -1){
+                        this.estado = 'Contraseña no válido';
+                        return false;
+                    }
+                    
+                    if(nuevo.length < 5){
+                        this.estado = 'Contraseña no válido';
+                        return false;
+                    }
+
+                    this.estado = 'Contraseña válida'
+                }
+            }
+        })
+        Vue.config.devtools = true
+    </script>
+</body>
+</html>
