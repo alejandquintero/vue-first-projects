@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Span cargando</title>
+    <style>
+      body {
+        background-color: #335;
+      }
+
+      span{
+        margin-left: 10px;
+        position: absolute;
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-image: radial-gradient(circle, transparent 7px, #111 8px);
+        animation: spin infinite 1s alternate-reverse;
+      }
+
+      span::after{
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 2px;
+        background-color: lightblue;
+        transform: translateY(9px);
+      }
+
+      @keyframes spin {
+        0%{
+          transform: translateY(2px) rotate(0);
+        }
+        100%{
+          transform : translateY(2px) rotate(360deg)
+        }
+      } 
+      
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <!-- Cuando hacemos click en el boton hacemos la llamada a la api  -->
+      <button class="button" @click="mostrarUsuarios">Mostrar usuarios</button>
+
+      <!-- Mientras fetch responde a la peticion mostramos un mensaje indicandole al usuario que está cargando la información -->
+      <span v-if="span" ></span>
+
+      <!-- Cuando llega la información entonces cambiamos el modelo "mostrar" a true para que pueda renderizarse el componente usuarios -->
+      <usuarios v-if="mostrar" :usuarios="usuariosDisponibles"></usuarios>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+
+    <!-- Template de usuarios -->
+
+    <script type="text/x-template" id="list-template">
+      <ul>
+          <li v-for="usuario in usuarios"> {{ usuario.nombre.first }}  </li>
+      </ul>
+    </script>
+
+    <script>
+      const usuarios = {
+        props: ["usuarios"],
+        template: "#list-template",
+      };
+
+      new Vue({
+        el: "#app",
+        data: {
+          usuariosDisponibles: [],
+          mostrar: false,
+          span: false,
+        },
+        methods: {
+          mostrarUsuarios() {
+            // Mostramos el span "Cargando..."
+            this.span = true;
+
+            //Petición Ajax
+            fetch("https://randomuser.me/api/?results=5")
+              .then((res) => res.json())
+              .then((res) => {
+                this.usuariosDisponibles = res.results.map((usuario) => {
+                  return {
+                    nombre: usuario.name,
+                  };
+                });
+                //Renderizamos el componente usuarios
+                this.mostrar = true;
+                //Ocultamos el span "Cargando..."
+                this.span = false;
+              });
+          },
+        },
+        components: {
+          usuarios,
+        },
+      });
+
+      Vue.config.devtools = true;
+    </script>
+  </body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue</title>
+</head>
+<body>
+    <div id="app">
+        <button v-for="tab in tabs" @click="current = tab"> {{ tab | toUpperCase }} </button>
+        <component :is="currentComponent" :data="tareas"></component>
+        <!-- <tareas-todas :data="tareas"></tareas-todas>
+        <tareas-urgentes :data="tareas"></tareas-urgentes>
+        <tareas-finalizadas :data="tareas"></tareas-finalizadas> -->
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script>
+        // tareas-todas
+        // tareas-urgentes
+        // tareas-finalizadas
+
+        Vue.component('tareas-todas',{
+            props:['data'],
+            template: `
+                <div>
+                    <h3>Todas las tareas</h3>
+                    <ul>
+                        <li v-for="tarea in data"> {{ tarea.titulo }} </li>
+                    </ul>   
+                </div>
+            `
+        })
+
+        Vue.component('tareas-urgentes',{
+            props: ['data'],
+            data(){
+                return{
+                    tareasUrgentes: []
+                }
+            },
+            template: `
+            <div>
+                <h3>Tareas urgentes</h3>
+                <ul>
+                    <li v-for="tarea in tareasUrgentes"> {{ tarea.titulo }} </li>
+                </ul>   
+            </div>
+            `,
+            computed: {
+                mostrarTareas(){
+                    this.tareasUrgentes = [...this.data]
+                    return this.tareasUrgentes.sort((a,b) => b.prioridad - a.prioridad)
+                }            
+            }
+        })
+
+        Vue.component('tareas-finalizadas',{
+            props: ['data'],
+            template: `
+            <div>
+                <h3>Tareas finalizadas</h3>
+                <ul>
+                    <li v-for="tarea in mostrarTareas"> {{ tarea.titulo }} </li>
+                </ul>   
+            </div>
+            `,
+            computed: {
+                mostrarTareas(){
+                    return this.data.filter(tarea => tarea.completado === true)
+                }            
+            }
+        })
+
+        new Vue({
+            el: "#app",
+            data:{
+                tabs: ['todas', 'urgentes', 'finalizadas'],
+                current: 'todas',
+                tareas: [
+                
+                    {
+                        titulo: 'Preparar la serie de Nuxt',
+                        prioridad: 6,
+                        completado: false,
+                    },
+                    {
+                        titulo: 'Producir la serie de Vue-cli',
+                        prioridad: 7,
+                        completado: false,
+                    },
+                    {
+                        titulo: 'Finalizar la serie de Componentes',
+                        prioridad: 8,
+                        completado: false,
+                    },
+                    {
+                        titulo: 'Desarrollar la nueva Web de Escuela Vue',
+                        prioridad: 9,
+                        completado: false,
+                    },
+                    {
+                        titulo: 'Finalizar la serie Vue Esencial',
+                        prioridad: 7,
+                        completado: true,
+                    },
+                
+                ]
+            },
+            computed:{
+                currentComponent(){
+                    return `tareas-${this.current}`
+                }
+            },
+            filters:{
+                toUpperCase(contenido){
+                    return contenido.substring(0,1).toUpperCase() + contenido.substring(1, contenido.length)
+                }
+            }
+        })
+
+        Vue.config.devtools = true;
+    </script>
+</body>
+</html>
